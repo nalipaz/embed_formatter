@@ -7,6 +7,7 @@
 
 namespace Drupal\embed_formatter\Plugin\Field\FieldFormatter;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FormatterBase;
@@ -96,25 +97,18 @@ class EmbedFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = array();
-    $token_data = array(
-      'user' => \Drupal::currentUser(),
-      $items->getEntity()->getEntityTypeId() => $items->getEntity(),
-    );
 
     foreach ($items as $delta => $item) {
       $output = '<drupal-url data-embed-url="' . $item->uri . '" data-url-provider="Vimeo" />';
-      if ($this->getSetting('token_replace')) {
-        $output = \Drupal::token()->replace($output, $token_data);
-      }
 
-      $output = check_markup($output, $this->getSetting('format'), $item->getLangcode());
+      $output = Xss::filter($output, array('drupal-url'));
 
       $elements[$delta] = array(
-        '#type' => 'processed_text',
-        '#text' => $output,
-        '#format' => $this->getSetting('format'),
-        '#langcode' => $item->getLangcode(),
-      );dpm($elements);
+          '#type' => 'processed_text',
+          '#text' => $output,
+          '#format' => $this->getSetting('format'),
+          '#langcode' => $item->getLangcode(),
+      );
     }
 
     return $elements;
