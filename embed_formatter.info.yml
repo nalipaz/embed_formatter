@@ -1,0 +1,9 @@
+name: 'Embed Formatter'
+type: module
+description: 'Provides an additional formatter to render link fields as embeds.'
+package: Fields
+version: VERSION
+core: 8.x
+dependencies:
+  - link
+  - filter
