@@ -8,7 +8,6 @@
 namespace Drupal\embed_formatter\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\Xss;
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
